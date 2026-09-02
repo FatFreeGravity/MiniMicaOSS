@@ -1,0 +1,96 @@
+<UserControl x:Class="MiniMicaApp.Views.SamplePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:i18n="clr-namespace:MiniMicaApp.Localization"
+             Width="960" Height="640">
+
+    <!-- Layout and metrics are v4.1 MainControl.xaml, verbatim:
+           hero      480 DIP wide, right-aligned, vertically centered
+           column    420 DIP wide at x=45, title block 120 tall starting y=30
+           bullets   start y=160, 30 DIP icon + 15 DIP gap, 18 DIP between rows
+           action    50x240 pill, centered in the leftmost 465 DIP, bottom aligned
+
+         This file deliberately contains NO font, size, weight or color attributes.
+         Everything visual comes from a named style in Resources/Styles.xaml, so a fork
+         restyles the whole application from that one dictionary. Icons are raster
+         images whose light/dark artwork ThemeManager swaps through DynamicResource. -->
+
+    <Grid Background="Transparent">
+
+        <!-- Hero -->
+        <!-- Named for Narrator. The bullet icons below are left unnamed on purpose:
+             they are decorative and the heading beside each one carries the meaning. -->
+        <Image Source="/Resources/Branding/hero.jpg"
+               Width="480"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center"
+               Stretch="Uniform"
+               AutomationProperties.Name="{i18n:Loc Key=app_hero_alt}" />
+
+        <Grid Width="420" Height="520" Margin="45,0,0,0"
+              HorizontalAlignment="Left" VerticalAlignment="Top">
+
+            <!-- Title block -->
+            <StackPanel Height="120" Margin="0,30,0,0" VerticalAlignment="Top">
+                <TextBlock Style="{StaticResource MiniMica.PageTitleStyle}"
+                           Text="{i18n:Loc Key=app_title}" />
+                <TextBlock Style="{StaticResource MiniMica.PageSubtitleStyle}"
+                           Margin="0,15,0,0"
+                           Text="{i18n:Loc Key=app_subtitle}" />
+            </StackPanel>
+
+            <!-- Feature bullets -->
+            <StackPanel Width="420" Height="360" Margin="0,160,0,0"
+                        HorizontalAlignment="Left" VerticalAlignment="Top">
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,18">
+                    <Image Style="{StaticResource MiniMica.FeatureIconStyle}"
+                           Source="{DynamicResource MiniMica.SampleBullet1}" />
+                    <StackPanel Margin="15,0,0,0" HorizontalAlignment="Left">
+                        <TextBlock Style="{StaticResource MiniMica.FeatureHeadingStyle}"
+                                   Text="{i18n:Loc Key=app_bullet1a}" />
+                        <TextBlock Style="{StaticResource MiniMica.FeatureBodyStyle}"
+                                   Text="{i18n:Loc Key=app_bullet1b}" />
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,18">
+                    <Image Style="{StaticResource MiniMica.FeatureIconStyle}"
+                           Source="{DynamicResource MiniMica.SampleBullet2}" />
+                    <StackPanel Margin="15,0,0,0" HorizontalAlignment="Left">
+                        <TextBlock Style="{StaticResource MiniMica.FeatureHeadingStyle}"
+                                   Text="{i18n:Loc Key=app_bullet2a}" />
+                        <TextBlock Style="{StaticResource MiniMica.FeatureBodyStyle}"
+                                   Text="{i18n:Loc Key=app_bullet2b}" />
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,18">
+                    <Image Style="{StaticResource MiniMica.FeatureIconStyle}"
+                           Source="{DynamicResource MiniMica.SampleBullet3}" />
+                    <StackPanel Margin="15,0,0,0" HorizontalAlignment="Left">
+                        <TextBlock Style="{StaticResource MiniMica.FeatureHeadingStyle}"
+                                   Text="{i18n:Loc Key=app_bullet3a}" />
+                        <TextBlock Style="{StaticResource MiniMica.FeatureBodyStyle}"
+                                   Text="{i18n:Loc Key=app_bullet3b}" />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <!-- Call to action, centered within the text column's 465 DIP -->
+        <Grid Width="465" Height="120" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+            <Button Style="{StaticResource MiniMica.ActionButtonStyle}"
+                    Width="240" Height="50"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Center" VerticalAlignment="Top"
+                    Content="{i18n:Loc Key=app_button}" />
+        </Grid>
+
+        <!-- Build-time note, not product content. A derived app deletes this. -->
+        <TextBlock Style="{StaticResource MiniMica.PageNoteStyle}"
+                   Margin="0,0,30,30"
+                   HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                   Text="Custom chrome · fixed page host" />
+    </Grid>
+</UserControl>

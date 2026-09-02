@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+  </Configurations>
+  <Project Path="src/MiniMicaApp/MiniMicaApp.csproj" />
+  <Project Path="templates/MiniMica.Templates/MiniMica.Templates.csproj" />
+</Solution>

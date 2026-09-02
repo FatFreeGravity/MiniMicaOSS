@@ -1,0 +1,16 @@
+<shell:MiniMicaWindow x:Class="MiniMicaApp.Views.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:shell="clr-namespace:MiniMicaApp.Shell"
+                      xmlns:controls="clr-namespace:MiniMicaApp.Controls"
+                      xmlns:views="clr-namespace:MiniMicaApp.Views"
+                      Title="MiniMicaApp"
+                      Width="960" Height="670"
+                      WindowStartupLocation="CenterScreen">
+    <controls:FixedPageHost DesignWidth="960"
+                            DesignHeight="640"
+                            MinimumViewportWidth="500"
+                            PanStep="24">
+        <views:SamplePage />
+    </controls:FixedPageHost>
+</shell:MiniMicaWindow>

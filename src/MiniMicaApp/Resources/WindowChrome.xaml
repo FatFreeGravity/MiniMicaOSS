@@ -1,0 +1,276 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:chrome="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+                    xmlns:shell="clr-namespace:MiniMicaApp.Shell"
+                    xmlns:i18n="clr-namespace:MiniMicaApp.Localization">
+
+    <!-- Measurements deliberately preserve the established MiniMica v4.x title bar:
+         30 DIP high, 45 DIP caption buttons, icon at x=18 and title at x=48.
+
+         Structure note (v4.1 parity): hover/pressed live in Style.Triggers and set the
+         BUTTON's Background/Foreground. They must NOT be ControlTemplate.Triggers that
+         set the inner Border directly - a template trigger on the Border outranks the
+         TemplateBinding, so a derived style (the close button) could never repaint it.
+         That is why the close button previously refused to turn red.
+
+         Trigger order matters. WPF applies the last matching trigger, so the inactive
+         DataTrigger is declared FIRST and hover/pressed after it. Hovering an inactive
+         window therefore restores the full-contrast foreground, as in v4.1. -->
+
+    <Style x:Key="MiniMica.CaptionButtonStyle" TargetType="Button">
+        <Setter Property="Width" Value="45" />
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="{x:Null}" />
+        <!-- Segoe MDL2 Assets at 10, NOT Segoe Fluent Icons. Both fonts carry E921/E922/
+             E923/E8BB, but Fluent Icons redraws them with different metrics: at 10pt the
+             minimize bar loses a pixel of length and the maximize square stops landing on
+             pixel boundaries, so its 1px outline antialiases across two rows and reads as
+             a thicker, softer top edge. MDL2 hints to crisp pure-black strokes and is what
+             v4.1 matched against the Windows 11 Calculator title bar.
+             The Settings gear is the deliberate exception below - E713 is a Fluent Icons
+             glyph and v4.1 draws that one at 12. -->
+        <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+        <Setter Property="FontSize" Value="10" />
+        <!-- Focusable, deliberately. A real Windows title bar is not in the tab order,
+             but a Narrator user must be able to reach Settings, Minimize, Maximize and
+             Close, and v4.1 allowed exactly that. AutomationProperties.Name is set on each
+             button from the localized titlebar_* strings. -->
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="IsTabStop" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource MiniMica.FocusVisual}" />
+        <!-- CaptionGlyphBrush, not TitleBarForegroundBrush: the buttons sit on the window
+             background rather than on the caption fill, so under a contrast theme they need
+             ControlText. Using ActiveCaptionText here would color them for a background
+             they are not on. Identical in light/dark. -->
+        <Setter Property="Foreground" Value="{DynamicResource MiniMica.CaptionGlyphBrush}" />
+        <Setter Property="chrome:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource MiniMica.CaptionGlyphInactiveBrush}" />
+            </DataTrigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource MiniMica.CaptionHoverBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource MiniMica.CaptionHoverForegroundBrush}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource MiniMica.CaptionPressedBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource MiniMica.CaptionHoverForegroundBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Close: same geometry, red hover. Declared in the derived style so it outranks
+         the base hover trigger. -->
+    <Style x:Key="MiniMica.CloseCaptionButtonStyle" TargetType="Button" BasedOn="{StaticResource MiniMica.CaptionButtonStyle}">
+        <Setter Property="Content" Value="&#xE8BB;" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource MiniMica.CaptionCloseHoverBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource MiniMica.CaptionCloseHoverForegroundBrush}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource MiniMica.CaptionClosePressedBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource MiniMica.CaptionCloseHoverForegroundBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="MiniMica.WindowStyle" TargetType="{x:Type shell:MiniMicaWindow}">
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <!-- Window.WindowStartupLocation is a plain CLR property, not a DependencyProperty,
+             so it cannot appear in a Setter. It is assigned in the MiniMicaWindow
+             constructor instead. -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type shell:MiniMicaWindow}">
+                    <!-- No BorderThickness here on purpose. A Border's thickness insets its
+                         child, so a 4 DIP contrast frame would take 8 DIP off the client
+                         area, the 960 design canvas would no longer fit, and the pan
+                         chevrons would appear on a window nobody resized. Compensating by
+                         resizing the window is stateful and double-counts against MinHeight.
+                         The frame is drawn instead as PART_ContrastFrame, an overlay with no
+                         layout impact - see below. -->
+                    <Border x:Name="WindowFrame"
+                            Background="{DynamicResource MiniMica.ChromeBackgroundBrush}"
+                            CornerRadius="8">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <!-- Auto, not {TemplateBinding TitleBarHeight}: RowDefinition.Height
+                                     is a GridLength and TitleBarHeight is a double. A TemplateBinding
+                                     performs no type conversion, so that binding fails silently and
+                                     leaves the row at 1*, splitting the window in half. The title bar
+                                     Grid below carries the explicit height and this row measures to it. -->
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0" Height="{TemplateBinding TitleBarHeight}" VerticalAlignment="Top">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Caption fill. Transparent in light/dark so the Mica
+                                     backdrop shows through; under a Windows contrast theme
+                                     it becomes the system caption color. Without it the
+                                     title uses ActiveCaptionText against an unfilled
+                                     background and renders dark-on-dark.
+
+                                     Column 0 ONLY - it must not span the caption buttons.
+                                     v4.1 put this fill in the single star-width column, so
+                                     the buttons keep the plain window background and their
+                                     glyphs get full window-text contrast rather than sitting
+                                     on the caption color. Measured on v4.1 under Night Sky:
+                                     the band stops exactly where the buttons begin.
+
+                                     Square corners are deliberate: in a contrast theme this
+                                     fill and the window frame are the same brush, so the
+                                     join is invisible - exactly as v4.1 did it. -->
+                                <Border x:Name="PART_TitleBarFill"
+                                        Grid.Column="0"
+                                        Background="{DynamicResource MiniMica.TitleBarBackgroundBrush}" />
+
+                                <Image x:Name="PART_AppIcon"
+                                       Grid.Column="0"
+                                       Width="16" Height="16"
+                                       Margin="18,7,0,0"
+                                       HorizontalAlignment="Left" VerticalAlignment="Top"
+                                       Source="/Resources/Branding/app.png"
+                                       Stretch="Fill"
+                                       chrome:WindowChrome.IsHitTestVisibleInChrome="True" />
+
+                                <TextBlock x:Name="PART_TitleText"
+                                           Grid.Column="0"
+                                           Margin="48,0,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           FontFamily="Segoe UI"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource MiniMica.TitleBarForegroundBrush}"
+                                           Text="{TemplateBinding Title}" />
+
+                                <!-- Segoe Fluent Icons first, Segoe MDL2 Assets as a
+                                     fallback. Fluent Icons ships only with Windows 11, so
+                                     on Windows 10 the gear would otherwise render as a
+                                     missing glyph. WPF resolves a FontFamily list per
+                                     glyph, so Windows 11 looks exactly as before and
+                                     Windows 10 gets the MDL2 drawing of the same
+                                     codepoint. -->
+                                <Button x:Name="PART_SettingsButton"
+                                        Grid.Column="1"
+                                        Style="{StaticResource MiniMica.CaptionButtonStyle}"
+                                        FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                        FontSize="12"
+                                        Content="&#xE713;"
+                                        ToolTip="{i18n:Loc Key=titlebar_settings}"
+                                        AutomationProperties.Name="{i18n:Loc Key=titlebar_settings}" />
+                                <Button x:Name="PART_MinimizeButton"
+                                        Grid.Column="2"
+                                        Style="{StaticResource MiniMica.CaptionButtonStyle}"
+                                        Content="&#xE921;"
+                                        ToolTip="{i18n:Loc Key=titlebar_minimize}"
+                                        AutomationProperties.Name="{i18n:Loc Key=titlebar_minimize}" />
+                                <Button x:Name="PART_MaximizeButton"
+                                        Grid.Column="3"
+                                        Style="{StaticResource MiniMica.CaptionButtonStyle}"
+                                        Content="&#xE922;"
+                                        ToolTip="{i18n:Loc Key=titlebar_maximize}"
+                                        AutomationProperties.Name="{i18n:Loc Key=titlebar_maximize}" />
+                                <Button x:Name="PART_CloseButton"
+                                        Grid.Column="4"
+                                        Style="{StaticResource MiniMica.CloseCaptionButtonStyle}"
+                                        ToolTip="{i18n:Loc Key=titlebar_close}"
+                                        AutomationProperties.Name="{i18n:Loc Key=titlebar_close}" />
+                            </Grid>
+
+                            <AdornerDecorator Grid.Row="1">
+                                <ContentPresenter />
+                            </AdornerDecorator>
+
+                            <!-- Contrast-theme window outline, drawn ON TOP of everything
+                                 and last so it wins z-order. IsHitTestVisible=False keeps
+                                 it out of input, and because it overlays rather than insets,
+                                 it costs zero client area: the window stays 960x670 in every
+                                 theme and the design canvas always fits.
+                                 The 4 DIP overlap lands in the page's own margins (45 left,
+                                 30 right/bottom), so nothing is obscured.
+                                 Transparent and 0 thick outside a contrast theme. -->
+                            <Border x:Name="PART_ContrastFrame"
+                                    Grid.Row="0" Grid.RowSpan="2"
+                                    BorderBrush="{DynamicResource MiniMica.WindowFrameBrush}"
+                                    BorderThickness="{DynamicResource MiniMica.WindowFrameThickness}"
+                                    CornerRadius="8"
+                                    IsHitTestVisible="False" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsActive" Value="False">
+                            <Setter TargetName="PART_TitleText" Property="Foreground"
+                                    Value="{DynamicResource MiniMica.TitleBarInactiveForegroundBrush}" />
+                            <Setter TargetName="PART_TitleBarFill" Property="Background"
+                                    Value="{DynamicResource MiniMica.TitleBarInactiveBackgroundBrush}" />
+                            <Setter TargetName="PART_ContrastFrame" Property="BorderBrush"
+                                    Value="{DynamicResource MiniMica.WindowFrameInactiveBrush}" />
+                        </Trigger>
+
+                        <Trigger Property="WindowState" Value="Maximized">
+                            <Setter TargetName="PART_MaximizeButton" Property="Content" Value="&#xE923;" />
+                            <Setter TargetName="PART_MaximizeButton" Property="ToolTip" Value="{i18n:Loc Key=titlebar_restore}" />
+                            <Setter TargetName="PART_MaximizeButton" Property="AutomationProperties.Name" Value="{i18n:Loc Key=titlebar_restore}" />
+                            <!-- Maximized fills the work area, so the rounded corner would
+                                 leak desktop through and the contrast frame has nothing to
+                                 outline. v4.1 dropped the frame when maximized too. -->
+                            <Setter TargetName="WindowFrame" Property="CornerRadius" Value="0" />
+                            <Setter TargetName="PART_ContrastFrame" Property="CornerRadius" Value="0" />
+                            <Setter TargetName="PART_ContrastFrame" Property="BorderThickness" Value="0" />
+                        </Trigger>
+
+                        <!-- Snap Layouts. Once WM_NCHITTEST answers HTMAXBUTTON, Windows owns
+                             the pointer over this button and WPF never sees IsMouseOver, so the
+                             hover and pressed visuals are driven from the non-client messages
+                             instead. These sit in the parent template so they outrank the
+                             button's own style triggers. -->
+                        <Trigger Property="IsMaximizeButtonHovered" Value="True">
+                            <Setter TargetName="PART_MaximizeButton" Property="Background"
+                                    Value="{DynamicResource MiniMica.CaptionHoverBrush}" />
+                            <Setter TargetName="PART_MaximizeButton" Property="Foreground"
+                                    Value="{DynamicResource MiniMica.CaptionHoverForegroundBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsMaximizeButtonPressed" Value="True">
+                            <Setter TargetName="PART_MaximizeButton" Property="Background"
+                                    Value="{DynamicResource MiniMica.CaptionPressedBrush}" />
+                            <Setter TargetName="PART_MaximizeButton" Property="Foreground"
+                                    Value="{DynamicResource MiniMica.CaptionHoverForegroundBrush}" />
+                        </Trigger>
+
+                        <Trigger Property="ShowSettingsButton" Value="False">
+                            <Setter TargetName="PART_SettingsButton" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="ShowMinimizeButton" Value="False">
+                            <Setter TargetName="PART_MinimizeButton" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="ShowMaximizeButton" Value="False">
+                            <Setter TargetName="PART_MaximizeButton" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

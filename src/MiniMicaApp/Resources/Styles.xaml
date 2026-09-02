@@ -1,0 +1,305 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <!-- Designer-safe values; ThemeManager replaces this semantic palette at runtime. -->
+    <SolidColorBrush x:Key="MiniMica.WindowBackgroundBrush" Color="#F3F3F3" />
+    <SolidColorBrush x:Key="MiniMica.PageBackgroundBrush" Color="#F3F3F3" />
+    <SolidColorBrush x:Key="MiniMica.ChromeBackgroundBrush" Color="#F2F3F3F3" />
+    <SolidColorBrush x:Key="MiniMica.SurfaceBrush" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="MiniMica.SurfaceStrongBrush" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="MiniMica.BorderBrush" Color="#28000000" />
+    <SolidColorBrush x:Key="MiniMica.TextPrimaryBrush" Color="#181818" />
+    <SolidColorBrush x:Key="MiniMica.TextSecondaryBrush" Color="#99000000" />
+    <SolidColorBrush x:Key="MiniMica.AccentBrush" Color="#0067C0" />
+    <SolidColorBrush x:Key="MiniMica.AccentTextBrush" Color="White" />
+    <SolidColorBrush x:Key="MiniMica.ControlBrush" Color="#FAFAFA" />
+    <SolidColorBrush x:Key="MiniMica.ControlHoverBrush" Color="#E5E5E5" />
+    <SolidColorBrush x:Key="MiniMica.ControlPressedBrush" Color="#D8D8D8" />
+    <!-- Caption palette, light theme. Ported verbatim from MiniMica v4.1, which tuned
+         these against the Windows 11 Settings app. Keep in sync with ThemeManager. -->
+    <SolidColorBrush x:Key="MiniMica.TitleBarForegroundBrush" Color="Black" />
+    <SolidColorBrush x:Key="MiniMica.TitleBarInactiveForegroundBrush" Color="Silver" />
+    <SolidColorBrush x:Key="MiniMica.CaptionGlyphBrush" Color="Black" />
+    <SolidColorBrush x:Key="MiniMica.CaptionGlyphInactiveBrush" Color="Silver" />
+    <SolidColorBrush x:Key="MiniMica.CaptionHoverBrush" Color="#DBDBDB" />
+    <SolidColorBrush x:Key="MiniMica.CaptionHoverForegroundBrush" Color="Black" />
+    <SolidColorBrush x:Key="MiniMica.CaptionPressedBrush" Color="#CFCFCF" />
+    <SolidColorBrush x:Key="MiniMica.CaptionCloseHoverBrush" Color="#C42B1C" />
+    <SolidColorBrush x:Key="MiniMica.CaptionCloseHoverForegroundBrush" Color="White" />
+    <SolidColorBrush x:Key="MiniMica.CaptionClosePressedBrush" Color="#A4262C" />
+    <SolidColorBrush x:Key="MiniMica.WindowFrameBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="MiniMica.WindowFrameInactiveBrush" Color="Transparent" />
+    <Thickness x:Key="MiniMica.WindowFrameThickness">0</Thickness>
+
+    <!-- Contrast-theme surfaces. Inert outside a Windows contrast theme, where
+         ThemeManager replaces them with system caption colors. -->
+    <SolidColorBrush x:Key="MiniMica.TitleBarBackgroundBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="MiniMica.TitleBarInactiveBackgroundBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="MiniMica.BrandBorderBrush" Color="Transparent" />
+    <Thickness x:Key="MiniMica.BrandBorderThickness">0</Thickness>
+    <system:Double x:Key="MiniMica.PageShadowOpacity">0.25</system:Double>
+    <SolidColorBrush x:Key="MiniMica.FocusBrush" Color="Black" />
+
+    <!-- Keyboard focus ring. WPF's default focus visual is a 1px dotted rectangle that
+         is close to invisible on a dark or high-contrast background, which makes
+         keyboard navigation unusable. This one is solid, 2px, and tracks the theme. It
+         renders only for keyboard focus, never for a mouse click. -->
+    <Style x:Key="MiniMica.FocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle Margin="-2"
+                               StrokeThickness="2"
+                               Stroke="{DynamicResource MiniMica.FocusBrush}"
+                               RadiusX="2" RadiusY="2"
+                               SnapsToDevicePixels="True" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ================================================================
+         PER-CULTURE LAYOUT METRICS
+
+         A fixed canvas cannot reflow, and the same sentence is materially longer
+         in German or Finnish than in English. These are the numbers that absorb
+         that difference. The values below are the en-US baseline; a culture that
+         overflows gets its own value from the metric_* rows of
+         tools/localization/worksheet.csv, applied at startup by
+         LocalizationManager.ApplyMetrics.
+
+         Adjusting one spreadsheet cell replaces editing XAML per language.
+         ================================================================ -->
+    <system:Double x:Key="MiniMica.PageTitleFontSize">33</system:Double>
+    <system:Double x:Key="MiniMica.PageSubtitleFontSize">12</system:Double>
+    <system:Double x:Key="MiniMica.FeatureHeadingFontSize">22</system:Double>
+    <system:Double x:Key="MiniMica.FeatureBodyFontSize">14</system:Double>
+    <system:Double x:Key="MiniMica.FeatureBodyWidth">375</system:Double>
+    <system:Double x:Key="MiniMica.ActionButtonFontSize">22</system:Double>
+
+    <!-- Brand palette for page content, kept separate from the neutral palette above so
+         product identity and shell chrome can change independently. v4.1 Contoso values. -->
+    <SolidColorBrush x:Key="MiniMica.BrandInkBrush" Color="#001D2F" />
+    <SolidColorBrush x:Key="MiniMica.BrandAccentBrush" Color="#0F866C" />
+    <SolidColorBrush x:Key="MiniMica.BrandAccentTextBrush" Color="#0F866C" />
+    <SolidColorBrush x:Key="MiniMica.BrandAccentHoverBrush" Color="#14BD9B" />
+    <SolidColorBrush x:Key="MiniMica.BrandOnAccentBrush" Color="White" />
+
+    <!-- Sample bullet icons. ThemeManager swaps in the _d artwork for dark mode. -->
+    <BitmapImage x:Key="MiniMica.SampleBullet1" UriSource="/Resources/Branding/bullet1_l.png" />
+    <BitmapImage x:Key="MiniMica.SampleBullet2" UriSource="/Resources/Branding/bullet2_l.png" />
+    <BitmapImage x:Key="MiniMica.SampleBullet3" UriSource="/Resources/Branding/bullet3_l.png" />
+
+    <!-- ================================================================
+         PAGE TYPOGRAPHY - define once here, apply by name in the views.
+
+         Every font, size, weight, color and text width used by the sample page
+         lives in this block. SamplePage.xaml sets no font or color attributes of
+         its own; it only positions elements and names a style. To restyle a whole
+         application, edit these values and nothing else.
+
+         Values are v4.1's: Cambria for display text, Segoe UI for body, brand ink
+         for content, brand accent for the subtitle.
+
+         If you would rather a rule apply to EVERY control of a type without naming
+         it, drop the x:Key and keep only TargetType - WPF then treats it as an
+         implicit style for that type throughout the dictionary's scope. Named styles
+         are used here because a template is easier to read when each view states
+         which role it is using.
+         ================================================================ -->
+
+    <Style x:Key="MiniMica.PageTitleStyle" TargetType="TextBlock">
+        <!-- Focusable so keyboard and Narrator users can Tab through the content and hear
+             it read. A TextBlock's automation name defaults to its Text, so nothing else
+             is needed. Set centrally here rather than per element. -->
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource MiniMica.FocusVisual}" />
+        <Setter Property="FontFamily" Value="Cambria" />
+        <Setter Property="FontSize" Value="{DynamicResource MiniMica.PageTitleFontSize}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{DynamicResource MiniMica.BrandInkBrush}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <Style x:Key="MiniMica.PageSubtitleStyle" TargetType="TextBlock">
+        <!-- Focusable so keyboard and Narrator users can Tab through the content and hear
+             it read. A TextBlock's automation name defaults to its Text, so nothing else
+             is needed. Set centrally here rather than per element. -->
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource MiniMica.FocusVisual}" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="{DynamicResource MiniMica.PageSubtitleFontSize}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <!-- BrandAccentTextBrush, not BrandAccentBrush: the accent used as TEXT resolves to
+             WindowText under a contrast theme, whereas the fill role resolves to button
+             face - which is the window background in most contrast themes, making this
+             string invisible. -->
+        <Setter Property="Foreground" Value="{DynamicResource MiniMica.BrandAccentTextBrush}" />
+    </Style>
+
+    <Style x:Key="MiniMica.FeatureHeadingStyle" TargetType="TextBlock">
+        <!-- Focusable so keyboard and Narrator users can Tab through the content and hear
+             it read. A TextBlock's automation name defaults to its Text, so nothing else
+             is needed. Set centrally here rather than per element. -->
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource MiniMica.FocusVisual}" />
+        <Setter Property="FontFamily" Value="Cambria" />
+        <Setter Property="FontSize" Value="{DynamicResource MiniMica.FeatureHeadingFontSize}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{DynamicResource MiniMica.BrandInkBrush}" />
+    </Style>
+
+    <Style x:Key="MiniMica.FeatureBodyStyle" TargetType="TextBlock">
+        <!-- Focusable so keyboard and Narrator users can Tab through the content and hear
+             it read. A TextBlock's automation name defaults to its Text, so nothing else
+             is needed. Set centrally here rather than per element. -->
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource MiniMica.FocusVisual}" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="{DynamicResource MiniMica.FeatureBodyFontSize}" />
+        <Setter Property="Foreground" Value="{DynamicResource MiniMica.BrandInkBrush}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <!-- Width belongs here rather than on each row: it is the measure that keeps all
+             three bullets wrapping identically. v4.1 repeated Width=375 three times.
+             Per-culture overridable, like the sizes. -->
+        <Setter Property="Width" Value="{DynamicResource MiniMica.FeatureBodyWidth}" />
+        <Setter Property="Margin" Value="0,6,0,0" />
+    </Style>
+
+    <Style x:Key="MiniMica.FeatureIconStyle" TargetType="Image">
+        <Setter Property="Width" Value="30" />
+        <Setter Property="Height" Value="30" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Stretch" Value="Uniform" />
+    </Style>
+
+    <Style x:Key="MiniMica.PageNoteStyle" TargetType="TextBlock">
+        <!-- Focusable so keyboard and Narrator users can Tab through the content and hear
+             it read. A TextBlock's automation name defaults to its Text, so nothing else
+             is needed. Set centrally here rather than per element. -->
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource MiniMica.FocusVisual}" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Foreground" Value="{DynamicResource MiniMica.TextSecondaryBrush}" />
+    </Style>
+
+    <!-- Primary call to action: a pill, because CornerRadius 25 meets a Height of 50.
+         Change both together if the button is resized. Ported from v4.1
+         ContosoActionButton_L, including the hover swap to the darker/brighter accent. -->
+    <Style x:Key="MiniMica.ActionButtonStyle" TargetType="Button">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource MiniMica.FocusVisual}" />
+        <Setter Property="FontFamily" Value="Cambria" />
+        <Setter Property="FontSize" Value="{DynamicResource MiniMica.ActionButtonFontSize}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Background" Value="{DynamicResource MiniMica.BrandAccentBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource MiniMica.BrandOnAccentBrush}" />
+        <!-- Zero outside a contrast theme, where the accent fill alone reads as a button.
+             Under a contrast theme ThemeManager turns these into a real outline, because
+             ButtonFace and the window background can be the same color. -->
+        <Setter Property="BorderBrush" Value="{DynamicResource MiniMica.BrandBorderBrush}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource MiniMica.BrandBorderThickness}" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Pill"
+                            CornerRadius="25"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource MiniMica.BrandAccentHoverBrush}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.55" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="MiniMica.SectionTitleStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{DynamicResource MiniMica.TextPrimaryBrush}" />
+    </Style>
+
+    <Style x:Key="MiniMica.BodyTextStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="Foreground" Value="{DynamicResource MiniMica.TextSecondaryBrush}" />
+    </Style>
+
+    <Style x:Key="MiniMica.ValueTextStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{DynamicResource MiniMica.TextPrimaryBrush}" />
+    </Style>
+
+    <Style x:Key="MiniMica.CardStyle" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource MiniMica.SurfaceBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MiniMica.BorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="Padding" Value="20" />
+    </Style>
+
+    <!-- No RadioButton / CheckBox styles by design.
+         The Settings dialog uses stock WPF controls: dated, but familiar, consistent,
+         and free of an accent color the rest of the chrome never uses. v4.1 shipped
+         them unstyled for the same reason. Earlier v5 builds restyled them with
+         MiniMica.AccentBrush, which put blue in an otherwise neutral dialog. -->
+
+    <Style x:Key="MiniMica.ButtonStyle" TargetType="Button">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Foreground" Value="{DynamicResource MiniMica.TextPrimaryBrush}" />
+        <Setter Property="Background" Value="{DynamicResource MiniMica.ControlBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MiniMica.BorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="16,7" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="6"
+                            SnapsToDevicePixels="True">
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          RecognizesAccessKey="True" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource MiniMica.ControlHoverBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource MiniMica.ControlPressedBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.55" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource MiniMica.AccentBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+</ResourceDictionary>

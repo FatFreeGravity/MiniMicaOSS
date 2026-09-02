@@ -1,0 +1,145 @@
+<shell:MiniMicaWindow x:Class="MiniMicaApp.Settings.SettingsWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:shell="clr-namespace:MiniMicaApp.Shell"
+                      xmlns:i18n="clr-namespace:MiniMicaApp.Localization"
+                      Width="480" Height="300"
+                      MinWidth="480" MinHeight="300"
+                      MaxWidth="480" MaxHeight="300"
+                      ResizeMode="NoResize"
+                      WindowStartupLocation="CenterOwner"
+                      ShowInTaskbar="False"
+                      ShowSettingsButton="False"
+                      ShowMinimizeButton="False"
+                      ShowMaximizeButton="False">
+
+    <!-- Geometry is v4.1's, verbatim: 480x300 DIP with a 30 DIP title bar, leaving a
+         480x270 content area. Earlier v5 builds used 600x375, which is this same dialog
+         measured off a screenshot captured at 125% DPI - a reference PNG's pixel size is
+         not its DIP size.
+
+         Content metrics from v4.1 DialogControl.xaml:
+           title block   60 DIP tall at the top, centered, 24pt SemiBold
+           option rows   begin 90 DIP into the content area, 30 DIP pitch
+           gutters       30 DIP left and right, 25 DIP icon column
+           version       centered, 30 DIP up from the bottom
+
+         The controls are deliberately STOCK WPF RadioButton/CheckBox and deliberately
+         right-aligned. The stock look is dated but familiar and consistent, and it keeps
+         the dialog free of an accent color the rest of the chrome never uses.
+         Do not restyle them without a reason. -->
+
+    <Grid Background="{DynamicResource MiniMica.PageBackgroundBrush}">
+
+        <!-- Title -->
+        <Grid Height="60" VerticalAlignment="Top">
+            <TextBlock x:Name="SettingsTitle"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontFamily="Segoe UI"
+                       FontSize="24"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource MiniMica.TextPrimaryBrush}" />
+        </Grid>
+
+        <!-- Option rows -->
+        <Grid Margin="30,90,30,0" VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- 1. Appearance -->
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="&#xE790;"
+                       FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Padding="0,2,0,0"
+                       HorizontalAlignment="Left" VerticalAlignment="Top"
+                       Foreground="{DynamicResource MiniMica.TextPrimaryBrush}" />
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="{i18n:Loc Key=settings_appearance}"
+                       FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"
+                       Foreground="{DynamicResource MiniMica.TextPrimaryBrush}" />
+            <RadioButton x:Name="AutomaticRadio" Grid.Row="0" Grid.Column="2"
+                         Content="{i18n:Loc Key=settings_appearance_auto}"
+                         FontSize="14" GroupName="Appearance" Margin="0,0,14,0"
+                         HorizontalAlignment="Right" VerticalAlignment="Top"
+                         Foreground="{DynamicResource MiniMica.TextPrimaryBrush}"
+                         Click="OnAutomaticClick" />
+            <RadioButton x:Name="LightRadio" Grid.Row="0" Grid.Column="3"
+                         Content="{i18n:Loc Key=settings_appearance_light}"
+                         FontSize="14" GroupName="Appearance" Margin="0,0,14,0"
+                         HorizontalAlignment="Right" VerticalAlignment="Top"
+                         Foreground="{DynamicResource MiniMica.TextPrimaryBrush}"
+                         Click="OnLightClick" />
+            <RadioButton x:Name="DarkRadio" Grid.Row="0" Grid.Column="4"
+                         Content="{i18n:Loc Key=settings_appearance_dark}"
+                         FontSize="14" GroupName="Appearance"
+                         HorizontalAlignment="Right" VerticalAlignment="Top"
+                         Foreground="{DynamicResource MiniMica.TextPrimaryBrush}"
+                         Click="OnDarkClick" />
+
+            <!-- 2. Windows notifications -->
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="&#xF2A3;"
+                       FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Padding="0,2,0,0"
+                       HorizontalAlignment="Left" VerticalAlignment="Top"
+                       Foreground="{DynamicResource MiniMica.TextPrimaryBrush}" />
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{i18n:Loc Key=settings_notification}"
+                       FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"
+                       Foreground="{DynamicResource MiniMica.TextPrimaryBrush}" />
+            <CheckBox x:Name="NotificationsCheckBox" Grid.Row="1" Grid.Column="4"
+                      HorizontalAlignment="Right" VerticalAlignment="Top"
+                      Click="OnNotificationsClick" />
+
+            <!-- 3. Anonymous usage data -->
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="&#xE9D9;"
+                       FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Padding="0,2,0,0"
+                       HorizontalAlignment="Left" VerticalAlignment="Top"
+                       Foreground="{DynamicResource MiniMica.TextPrimaryBrush}" />
+            <TextBlock Grid.Row="2" Grid.Column="1" Text="{i18n:Loc Key=settings_telemetry}"
+                       FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"
+                       Foreground="{DynamicResource MiniMica.TextPrimaryBrush}" />
+            <CheckBox x:Name="TelemetryCheckBox" Grid.Row="2" Grid.Column="4"
+                      HorizontalAlignment="Right" VerticalAlignment="Top"
+                      Click="OnTelemetryClick" />
+
+            <!-- 4. Language - DEVELOPER OPTION, hidden by default.
+                 Revealed only when the dialog is opened with Ctrl+Shift held. It forces
+                 a UI language other than the Windows default so localization can be
+                 checked without changing Windows' own language. Carried over from v4.1,
+                 where it lived in the "TestOnly" grid. Not localized on purpose: it is
+                 not a user-facing feature and must stay readable in every language. -->
+            <Grid x:Name="LanguageRow" Grid.Row="3" Grid.ColumnSpan="5" Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="&#xF2B7;"
+                           FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Padding="0,2,0,0"
+                           HorizontalAlignment="Left" VerticalAlignment="Top"
+                           Foreground="{DynamicResource MiniMica.TextPrimaryBrush}" />
+                <TextBlock Grid.Column="1" Text="Language (developer)"
+                           FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"
+                           Foreground="{DynamicResource MiniMica.TextPrimaryBrush}" />
+                <ComboBox x:Name="LanguageCombo" Grid.Column="2" Width="180"
+                          HorizontalAlignment="Right" VerticalAlignment="Top"
+                          SelectedValuePath="Tag"
+                          SelectionChanged="OnLanguageChanged" />
+            </Grid>
+        </Grid>
+
+        <TextBlock x:Name="VersionText"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Bottom"
+                   Margin="0,0,0,30"
+                   FontSize="12"
+                   Foreground="#808080" />
+    </Grid>
+</shell:MiniMicaWindow>

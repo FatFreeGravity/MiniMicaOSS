@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- This project only creates the dotnet-new NuGet package. Its target framework
+         does not become part of generated MiniMica applications. -->
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>MiniMica.Templates</PackageId>
+    <!-- Version intentionally omitted: inherited from Directory.Build.props so the
+         template package and the MiniMica release always carry the same number.
+         An explicit <Version> here silently overrides that and was the cause of the
+         package shipping as 1.0.0 while the product was 5.0. -->
+    <Authors>Fat Free Gravity</Authors>
+    <Copyright>Copyright © 2025-2026 Fat Free Gravity</Copyright>
+    <Description>dotnet new template package for tiny .NET Framework 4.8 MiniMica WPF applications.</Description>
+    <PackageTags>wpf;windows11;mica;net48;template;desktop;localization;resx</PackageTags>
+    <PackageType>Template</PackageType>
+    <IsPackable>true</IsPackable>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <NoDefaultExcludes>true</NoDefaultExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\src\MiniMicaApp\**\*"
+             Exclude="..\..\src\MiniMicaApp\bin\**;..\..\src\MiniMicaApp\obj\**"
+             Pack="true"
+             PackagePath="content\MiniMicaApp\%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  # Fast, OS-independent gate. Catches missing resource keys, XAML wired to
+  # methods that do not exist, and template-rename drift before a Windows
+  # agent is spent on them.
+  static-verification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Offline verification suite
+        run: python3 tools/verify/verify.py
+
+  build-and-template-smoke-test:
+    needs: static-verification
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The SDK is used for the dotnet-new template engine/package only. Generated
+      # applications target .NET Framework 4.8 and do not ship this runtime.
+      - name: Setup dotnet CLI
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Run net48 template smoke tests and size budget
+        shell: pwsh
+        run: .\scripts\test-template.ps1

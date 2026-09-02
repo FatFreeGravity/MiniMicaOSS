@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="app_title" xml:space="preserve">
+    <value>Reykjavik</value>
+  </data>
+  <data name="app_subtitle" xml:space="preserve">
+    <value>Skolavordustigur Street Travel Guide</value>
+  </data>
+  <data name="app_hero_alt" xml:space="preserve">
+    <value>Photograph of Skolavordustigur Street, Reykjavik</value>
+  </data>
+  <data name="app_bullet1a" xml:space="preserve">
+    <value>Red</value>
+  </data>
+  <data name="app_bullet1b" xml:space="preserve">
+    <value>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</value>
+  </data>
+  <data name="app_bullet2a" xml:space="preserve">
+    <value>Orange</value>
+  </data>
+  <data name="app_bullet2b" xml:space="preserve">
+    <value>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</value>
+  </data>
+  <data name="app_bullet3a" xml:space="preserve">
+    <value>Yellow</value>
+  </data>
+  <data name="app_bullet3b" xml:space="preserve">
+    <value>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</value>
+  </data>
+  <data name="app_button" xml:space="preserve">
+    <value>Get Started</value>
+  </data>
+  <data name="titlebar_settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="titlebar_minimize" xml:space="preserve">
+    <value>Minimize</value>
+  </data>
+  <data name="titlebar_maximize" xml:space="preserve">
+    <value>Maximize</value>
+  </data>
+  <data name="titlebar_restore" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="titlebar_close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="pan_left" xml:space="preserve">
+    <value>Scroll left</value>
+  </data>
+  <data name="pan_right" xml:space="preserve">
+    <value>Scroll right</value>
+  </data>
+  <data name="settings_title" xml:space="preserve">
+    <value>{ProductName} Settings</value>
+  </data>
+  <data name="settings_appearance" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="settings_appearance_auto" xml:space="preserve">
+    <value>Automatic</value>
+  </data>
+  <data name="settings_appearance_light" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="settings_appearance_dark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="settings_notification" xml:space="preserve">
+    <value>Windows notifications</value>
+  </data>
+  <data name="settings_telemetry" xml:space="preserve">
+    <value>Send anonymous usage data</value>
+  </data>
+  <data name="settings_version" xml:space="preserve">
+    <value>Version {M.m.build}</value>
+  </data>
+  <data name="metric_page_title_size" xml:space="preserve">
+    <value>33</value>
+  </data>
+  <data name="metric_page_subtitle_size" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="metric_feature_heading_size" xml:space="preserve">
+    <value>22</value>
+  </data>
+  <data name="metric_feature_body_size" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="metric_feature_body_width" xml:space="preserve">
+    <value>375</value>
+  </data>
+  <data name="metric_action_button_size" xml:space="preserve">
+    <value>22</value>
+  </data>
+</root>

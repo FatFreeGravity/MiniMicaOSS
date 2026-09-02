@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json.schemastore.org/template",
+  "author": "Fat Free Gravity",
+  "classifications": [
+    "Desktop",
+    "WPF",
+    ".NET Framework",
+    "Windows 11",
+    "Mica"
+  ],
+  "identity": "MiniMica.Wpf.Net48.Application.CSharp",
+  "name": "MiniMica .NET Framework 4.8 WPF Application",
+  "shortName": "minimica",
+  "sourceName": "MiniMicaApp",
+  "preferNameDirectory": true,
+  "description": "A tiny, fork-friendly .NET Framework 4.8 WPF starter for Windows 11 22H2 and newer.",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "symbols": {
+    "theme": {
+      "type": "parameter",
+      "datatype": "choice",
+      "defaultValue": "System",
+      "description": "Default application theme.",
+      "replaces": "MINIMICA_THEME",
+      "choices": [
+        { "choice": "System", "description": "Follow the Windows app theme." },
+        { "choice": "Light", "description": "Always use the light MiniMica palette." },
+        { "choice": "Dark", "description": "Always use the dark MiniMica palette." }
+      ]
+    },
+    "backdrop": {
+      "type": "parameter",
+      "datatype": "choice",
+      "defaultValue": "Mica",
+      "description": "Default Windows 11 backdrop.",
+      "replaces": "MINIMICA_BACKDROP",
+      "choices": [
+        { "choice": "Mica", "description": "Mica / main-window backdrop." },
+        { "choice": "Acrylic", "description": "Transient-window Acrylic backdrop." },
+        { "choice": "Tabbed", "description": "Tabbed Mica backdrop." },
+        { "choice": "Auto", "description": "Let Windows select the system backdrop." },
+        { "choice": "None", "description": "Disable the DWM backdrop." }
+      ]
+    }
+  }
+}

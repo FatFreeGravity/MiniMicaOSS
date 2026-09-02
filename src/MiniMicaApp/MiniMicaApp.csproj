@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <LangVersion>7.3</LangVersion>
+    <RootNamespace>MiniMicaApp</RootNamespace>
+    <AssemblyName>MiniMicaApp</AssemblyName>
+    <!-- Identity, version and copyright live in Properties/AssemblyInfo.cs, the way a
+         classic WPF project does it. An SDK-style project generates those attributes
+         from MSBuild properties by default, so that generation has to be turned off or
+         the two sets collide with CS0579 duplicate attribute errors. -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Resources\Branding\app.ico</ApplicationIcon>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Part of .NET Framework 4.8 itself, not a NuGet package: adds no payload.
+         Required by SettingsStore, which reads/writes the per-user app.config through
+         ConfigurationManager so derived apps can open the same file with the standard
+         API rather than parsing our XML by hand. -->
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Branding assets. hero.jpg is the v4.1 photograph re-encoded to 1100x814 at
+         quality 88 (248 KB, down from 1.06 MB) - it renders at 480 DIP, so 1100px still
+         covers scaling past 200% while leaving room under the 1.25 MiB payload budget.
+         Bullet icons ship as light/dark pairs; ThemeManager selects between them. -->
+    <Resource Include="Resources\Branding\app.png" />
+    <Resource Include="Resources\Branding\app.ico" />
+    <Resource Include="Resources\Branding\hero.jpg" />
+    <Resource Include="Resources\Branding\bullet1_l.png" />
+    <Resource Include="Resources\Branding\bullet1_d.png" />
+    <Resource Include="Resources\Branding\bullet2_l.png" />
+    <Resource Include="Resources\Branding\bullet2_d.png" />
+    <Resource Include="Resources\Branding\bullet3_l.png" />
+    <Resource Include="Resources\Branding\bullet3_d.png" />
+  </ItemGroup>
+</Project>
